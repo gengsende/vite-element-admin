@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label="ID" width="95">
-        <template #="scope">{{ scope.index_ }}</template>
+        <template #="scope">{{ scope.row.id }}</template>
       </el-table-column>
       <el-table-column label="Title">
         <template #="scope">{{ scope.row.title }}</template>
