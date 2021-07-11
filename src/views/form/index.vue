@@ -1,90 +1,78 @@
 <template>
-  <div class="app-container">
-    <el-form :model="form" label-width="120px">
-      <el-form-item label="Activity name">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="Activity zone">
-        <el-select v-model="form.region" placeholder="please select your zone">
-          <el-option label="Zone one" value="shanghai" />
-          <el-option label="Zone two" value="beijing" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="Activity time">
-        <div style="display: flex">
-          <el-date-picker v-model="form.date1" type="date" placeholder="Pick a date" />
-          <div class="line">-</div>
-          <el-time-picker v-model="form.date2" type="fixed-time" placeholder="Pick a time" />
-        </div>
-      </el-form-item>
-      <el-form-item label="Instant delivery">
-        <el-switch v-model="form.delivery" />
-      </el-form-item>
-      <el-form-item label="Activity type">
-        <el-checkbox-group v-model="form.type">
-          <el-checkbox label="Online activities" name="type" />
-          <el-checkbox label="Promotion activities" name="type" />
-          <el-checkbox label="Offline activities" name="type" />
-          <el-checkbox label="Simple brand exposure" name="type" />
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="Resources">
-        <el-radio-group v-model="form.resource">
-          <el-radio label="Sponsor" />
-          <el-radio label="Venue" />
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="Activity form">
-        <el-input v-model="form.desc" type="textarea" />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">Create</el-button>
-        <el-button @click="onCancel">Cancel</el-button>
-      </el-form-item>
-    </el-form>
-  </div>
+  <el-container>
+    <div style="height: 400px; width: 400px; margin: 0px auto">
+      <el-form label-position="top" style="margin-top: 5em" ref="formRef" :rules="loginRules" :model="formState">
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model.trim="formState.email" placeholder="请输入用户名/邮箱"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input
+            v-model.trim="formState.password"
+            type="password"
+            placeholder="请输入密码，六位数以上"
+            @keyup.enter="goLogin"
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <div style="display: flex; justify-content: center">
+            <el-button @click="goLogin" type="success" round @keyup.enter="goLogin">登录</el-button>
+          </div>
+        </el-form-item>
+      </el-form>
+    </div>
+  </el-container>
 </template>
-
-<script lang="ts">
-import { ElMessage } from 'element-plus'
-import { defineComponent, ref } from 'vue'
+<script>
+import { ref, defineComponent, reactive } from 'vue'
+import { ElMessage, ElLoading } from 'element-plus'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
-  setup() {
-    const form = ref({
-      name: '',
-      region: '',
-      date1: '',
-      date2: '',
-      delivery: false,
-      type: [],
-      resource: '',
-      desc: '',
+  setup: () => {
+    const router = useRouter()
+    const formRef = ref()
+    const formState = reactive({
+      email: '',
+      password: '',
     })
-    function onSubmit() {
-      console.log(form.value);
-      ElMessage('submit!')
-    }
-
-    function onCancel() {
-      ElMessage({
-        message: 'cancel!',
-        type: 'warning',
+    const loginRules = reactive({
+      email: [
+        { required: true, message: '请输入邮箱', trigger: 'blur' },
+        { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] },
+      ],
+      password: [
+        { required: true, message: '请输入密码', trigger: 'blur' },
+        { min: 8, max: 16, message: '长度在 8 到 16 个字符', trigger: 'blur' },
+      ],
+    })
+    const goLogin = async () => {
+      await formRef.value.validate(async valid => {
+        const loadingInstance = ElLoading.service({
+          fullscreen: true,
+          background: '#2c3e5000',
+        })
+        try {
+          if (valid) {
+            const { code, data } = await login(formState)
+            console.log(code, data)
+            if (code === 200) router.push('/register')
+          } else {
+            ElMessage('请正确填写表单1')
+          }
+        } catch (error) {
+          console.log(error)
+        }
+        loadingInstance.close()
       })
     }
-
     return {
-      form,
-      onSubmit,
-      onCancel,
+      formRef,
+      formState,
+      loginRules,
+      goLogin,
     }
   },
 })
 </script>
-
-<style scoped>
-.line {
-  margin: 0 18px;
-  text-align: center;
-}
-</style>
+<style lang="scss"></style>
