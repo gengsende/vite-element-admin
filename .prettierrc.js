@@ -8,7 +8,7 @@ module.exports = {
    * es5 包括es5中的数组、对象
    * all 包括函数对象等所有可选
    */
-  trailingComma: 'es5',
+  trailingComma: 'none',
   singleQuote: true, // 使用单引号, 默认false(在jsx中配置无效, 默认都是双引号)
   /**
    * 对象中的空格 默认true
@@ -36,5 +36,5 @@ module.exports = {
    */
   arrowParens: 'avoid',
   vueIndentScriptAndStyle: false, // vue 文件 script 和 style 标签缩进，默认false
-  endOfLine: 'lf', // 强制使用 unix 风格的换行符
+  endOfLine: 'lf' // 强制使用 unix 风格的换行符
 }
