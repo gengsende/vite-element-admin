@@ -3,8 +3,8 @@ module.exports = {
   plugins: ['prettier'],
   extends: ['plugin:vue/vue3-recommended', 'airbnb-base', 'plugin:prettier/recommended'],
   env: {
-    browser: true, // browser global variables
-    es2021: true // adds all ECMAScript 2021 globals and automatically sets the ecmaVersion parser option to 12.
+    browser: true,
+    es2021: true
   },
   parserOptions: {
     ecmaVersion: 12
