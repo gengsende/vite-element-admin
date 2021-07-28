@@ -12,6 +12,6 @@ export function getList(params?: Record<any, any>) {
   return request<{ items: Item[]; total: number }>({
     url: '/vue-admin-template/table/list',
     method: 'get',
-    params,
+    params
   })
 }

@@ -1,4 +1,4 @@
-import Vuex, { createStore } from 'vuex'
+import Vuex from 'vuex'
 import getters from './getters'
 import app from './modules/app'
 import settings from './modules/settings'
@@ -8,9 +8,9 @@ const store = new Vuex.Store({
   modules: {
     app,
     settings,
-    user,
+    user
   },
-  getters,
+  getters
 })
 
 export default store

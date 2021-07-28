@@ -40,7 +40,7 @@ export function parseTime(time, cFormat) {
     h: date.getHours(),
     i: date.getMinutes(),
     s: date.getSeconds(),
-    a: date.getDay(),
+    a: date.getDay()
   }
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
     const value = formatObj[key]
@@ -99,7 +99,7 @@ export function param2Obj(url) {
   }
   const obj = {}
   const searchArr = search.split('&')
-  searchArr.forEach(v => {
+  searchArr.forEach((v) => {
     const index = v.indexOf('=')
     if (index !== -1) {
       const name = v.substring(0, index)
@@ -108,25 +108,4 @@ export function param2Obj(url) {
     }
   })
   return obj
-}
-
-/**
- * Add class to element
- * @param {HTMLElement} elm
- * @param {string} cls
- */
-export function addClass(ele, cls) {
-  if (!hasClass(ele, cls)) ele.className += ' ' + cls
-}
-
-/**
- * Remove class from element
- * @param {HTMLElement} elm
- * @param {string} cls
- */
-export function removeClass(ele, cls) {
-  if (hasClass(ele, cls)) {
-    const reg = new RegExp('(\\s|^)' + cls + '(\\s|$)')
-    ele.className = ele.className.replace(reg, ' ')
-  }
 }
